@@ -46,6 +46,14 @@ patientEmail :: Patient -> Email
 patientEmail (_, _, email, _) = email
 
 
+validComEmail :: String -> Bool
+validComEmail email =
+    containsAtSign email && endsWithCom email
+  where
+    containsAtSign = \e -> "@" `isInfixOf` e
+    endsWithCom = \e -> ".com" `isSuffixOf` e
+
+
 main :: IO ()
 -- main = putStrLn $ checkLocalhost "173.194.22.100"
 -- main = putStrLn (analyzeGold 999)
@@ -57,9 +65,21 @@ main :: IO ()
   -- where
     -- (color, (from, to)) = chessMove "white" ("e2", "e4")
 
-main =
-  putStrLn (patientEmail ( "63ab89d"
-                         , "John Smith"
-                         , "johnsm@gmail.com"
-                         , 59
-                         ))
+-- main =
+--   putStrLn (patientEmail ( "63ab89d"
+--                          , "John Smith"
+--                          , "johnsm@gmail.com"
+--                          , 59
+--                          ))
+
+-- main = putStrLn ((head functions) "Hi")
+--   where
+--     functions = [ \x -> x ++ " val1"
+--                 , \x -> x ++ " val2"
+--                 ]
+
+main = putStrLn (if validComEmail my
+                   then "It's ok!"
+                   else "Non-com email!")
+  where
+    my = "haskeller@gmail.com"
