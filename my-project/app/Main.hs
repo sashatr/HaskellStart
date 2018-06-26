@@ -2,7 +2,9 @@
 
 module Main where
 
--- import Lib
+import Lib
+import Data.List
+
 
 checkLocalhost :: String -> String
 checkLocalhost ip =
@@ -31,4 +33,6 @@ calculateTime timeInS =
 main :: IO ()
 -- main = putStrLn $ checkLocalhost "173.194.22.100"
 -- main = putStrLn (analyzeGold 999)
-calculateTime 100
+-- calculateTime 100
+-- main = putStrLn (head ["A", "B", "C"])  -- tail
+main = print [0..10]
