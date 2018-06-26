@@ -30,9 +30,36 @@ calculateTime timeInS =
      | timeInS >= threshold -> timeInS + delta + correction
 
 
+chessMove :: String
+         -> (String, String)
+         -> (String, (String, String))
+chessMove color (from, to) = (color, (from, to))
+
+
+type UUID     = String
+type FullName = String
+type Email    = String
+type Age      = Int
+type Patient = (UUID, FullName, Email, Age)
+
+patientEmail :: Patient -> Email
+patientEmail (_, _, email, _) = email
+
+
 main :: IO ()
 -- main = putStrLn $ checkLocalhost "173.194.22.100"
 -- main = putStrLn (analyzeGold 999)
 -- calculateTime 100
 -- main = putStrLn (head ["A", "B", "C"])  -- tail
-main = print [0..10]
+-- main = print [0..10]
+
+-- main = print (color ++ ": " ++ from ++ "-" ++ to)
+  -- where
+    -- (color, (from, to)) = chessMove "white" ("e2", "e4")
+
+main =
+  putStrLn (patientEmail ( "63ab89d"
+                         , "John Smith"
+                         , "johnsm@gmail.com"
+                         , 59
+                         ))
