@@ -2,12 +2,11 @@ module Main where
 
 -- import Lib
 
--- main :: IO ()
--- main = someFunc
+checkLocalhost :: String -> String
+checkLocalhost ip =
+  if ip == "127.0.0.1" || ip == "0.0.0.0"
+    then "It's a localhost!"
+    else "No, it's not a localhost."
 
--- main = putStrLn "hello, world"
-
-main = do
-    putStrLn "Hello, what's your name?"
-    name <- getLine
-    putStrLn ("Hey " ++ name ++ ", you rock!")
+main :: IO ()
+main = putStrLn (checkLocalhost "173.194.22.100")
