@@ -1,3 +1,5 @@
+{-# LANGUAGE MultiWayIf #-}
+
 module Main where
 
 -- import Lib
@@ -8,15 +10,12 @@ checkLocalhost ip =
     then "It's a localhost!"
     else "No, it's not a localhost."
 
+
 analyzeGold :: Int -> String
-analyzeGold standard =
-  if standard == 999
-    then "Wow! 999 standard!"
-    else if standard == 750
-           then "Great! 750 standard."
-           else if standard == 585
-                  then "Not bad! 585 standard."
-                  else "I don't know such a standard..."
+analyzeGold 999 = "Wow! 999 standard!"
+analyzeGold 750 = "Great! 750 standard."
+analyzeGold 585 = "Not bad! 585 standard."
+analyzeGold _   = "I don't know such a standard..."
 
 main :: IO ()
 -- main = putStrLn $ checkLocalhost "173.194.22.100"
