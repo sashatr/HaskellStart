@@ -4,6 +4,7 @@ module Main where
 
 import Lib
 import Data.List
+import Data.Char
 
 
 checkLocalhost :: String -> String
@@ -46,15 +47,34 @@ patientEmail :: Patient -> Email
 patientEmail (_, _, email, _) = email
 
 
+type Func = String -> Bool
+
 validComEmail :: String -> Bool
 validComEmail email =
     containsAtSign email && endsWithCom email
   where
-    containsAtSign = \e -> "@" `isInfixOf` e
-    endsWithCom = \e -> ".com" `isSuffixOf` e
+    containsAtSign = (\e -> "@" `isInfixOf` e) :: Func
+    endsWithCom = (\e -> ".com" `isSuffixOf` e) :: Func
+
+
+toUpperCase :: String -> String
+toUpperCase str = map toUpper str
+
+
+ten :: [Double] -> [Double]
+ten = map (\n -> n * 10)
 
 
 main :: IO ()
+main = print . ten $ [1.2, 1,4, 1.6]
+
+-- main = putStrLn . toUpperCase $ ['h','a','s','k','e','l','l','.']
+-- main = putStrLn (if validComEmail my
+--                    then "It's ok!"
+--                    else "Non-com email!")
+--   where
+--     my = "haskeller@gmail.com"
+
 -- main = putStrLn $ checkLocalhost "173.194.22.100"
 -- main = putStrLn (analyzeGold 999)
 -- calculateTime 100
@@ -77,9 +97,3 @@ main :: IO ()
 --     functions = [ \x -> x ++ " val1"
 --                 , \x -> x ++ " val2"
 --                 ]
-
-main = putStrLn (if validComEmail my
-                   then "It's ok!"
-                   else "Non-com email!")
-  where
-    my = "haskeller@gmail.com"
