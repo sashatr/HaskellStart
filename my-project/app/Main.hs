@@ -5,6 +5,7 @@ module Main where
 import Lib
 import Data.List
 import Data.Char
+-- import Data.Text.IO as TIO
 
 
 checkLocalhost :: String -> String
@@ -66,7 +67,8 @@ ten = map (\n -> n * 10)
 
 
 main :: IO ()
-main = print . ten $ [1.2, 1,4, 1.6]
+main = putStrLn "test"
+-- main = print . ten $ [1.2, 1,4, 1.6]
 
 -- main = putStrLn . toUpperCase $ ['h','a','s','k','e','l','l','.']
 -- main = putStrLn (if validComEmail my
