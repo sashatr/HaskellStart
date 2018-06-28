@@ -37,7 +37,12 @@ workingDays SixDays = [ Monday
                      , Saturday
                      ]
 
-data IPAddress = IPAddress String
+data IPAddress = IPv4 String
+              | IPv4Localhost
+              | IPv6 String
+              | IPv6Localhost
+
+newtype IPAddress' = IP String
 
 
 checkProtocol :: Transport -> String
