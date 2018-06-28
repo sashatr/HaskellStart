@@ -5,7 +5,9 @@ module Main where
 import Lib
 import Data.List
 import Data.Char
--- import Data.Text.IO as TIO
+import Data.Text.IO
+-- import Database.PostgreSQL.Simple
+
 
 
 data Transport = TCP | UDP | SCTP
