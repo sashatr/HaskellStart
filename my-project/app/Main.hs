@@ -66,8 +66,18 @@ ten :: [Double] -> [Double]
 ten = map (\n -> n * 10)
 
 
+bad :: [Int] -> Int -> Int
+bad []         c = c
+bad (_:others) c = bad others $! c + 1
+
+
 main :: IO ()
-main = putStrLn "test"
+main = print $ bad [1..50000000] 0
+
+-- main = print $ evens
+  -- where evens = [2, 4 ..]  -- hmm, wow
+
+-- main = putStrLn "test"
 -- main = print . ten $ [1.2, 1,4, 1.6]
 
 -- main = putStrLn . toUpperCase $ ['h','a','s','k','e','l','l','.']
