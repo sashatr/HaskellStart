@@ -8,6 +8,45 @@ import Data.Char
 -- import Data.Text.IO as TIO
 
 
+data Transport = TCP | UDP | SCTP
+
+data WorkMode = FiveDays | SixDays
+
+data Day = Sunday
+         | Monday
+         | Tuesday
+         | Wednesday
+         | Thursday
+         | Friday
+         | Saturday
+
+
+workingDays :: WorkMode -> [Day]
+workingDays FiveDays = [ Monday
+                      , Tuesday
+                      , Wednesday
+                      , Thursday
+                      , Friday
+                      ]
+
+workingDays SixDays = [ Monday
+                     , Tuesday
+                     , Wednesday
+                     , Thursday
+                     , Friday
+                     , Saturday
+                     ]
+
+data IPAddress = IPAddress String
+
+
+checkProtocol :: Transport -> String
+checkProtocol transport = case transport of
+  TCP  -> "That's TCP protocol."
+  UDP  -> "That's UDP protocol."
+  SCTP -> "That's SCTP protocol."
+
+
 checkLocalhost :: String -> String
 checkLocalhost ip =
   if ip == "127.0.0.1" || ip == "0.0.0.0"
@@ -72,7 +111,12 @@ bad (_:others) c = bad others $! c + 1
 
 
 main :: IO ()
-main = print $ bad [1..50000000] 0
+main = putStrLn . checkProtocol $ TCP
+
+-- let ip = IPAddress "127.0.0.1"
+
+
+-- main = print $ bad [1..50000000] 0
 
 -- main = print $ evens
   -- where evens = [2, 4 ..]  -- hmm, wow
