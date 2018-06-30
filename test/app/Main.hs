@@ -1,18 +1,13 @@
 {-# LANGUAGE OverloadedStrings #-}
-
 module Main where
 
-import Database.PostgreSQL.Simple
-import Control.Monad
-import Control.Applicative
+import System.Environment (getArgs)
 
-main = do
-  conn <- connect defaultConnectInfo {
-      connectDatabase = "haskell_test"
-    , connectUser = "sasha_tr"
-    , connectPassword = "23212"
+import qualified Todo
 
-  }
+main :: IO ()
+main = Todo.main
 
-  putStrLn "2 + 2"
-  mapM_ print =<< ( query_ conn "select 2 + 2" :: IO [Only Int] )
+
+-- parse ["todo"] = Todo.main
+-- parse _ = putStrLn "usage: result/bin/postgresql-simple-examples [c|w|b|s|t|clients|words|basics|santa|todo]"
