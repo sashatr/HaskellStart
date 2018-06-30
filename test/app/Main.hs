@@ -1,10 +1,18 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Main where
 
-import Lib
-import Data.Text.IO as TIO
-import Data.Char
 import Database.PostgreSQL.Simple
+import Control.Monad
+import Control.Applicative
 
+main = do
+  conn <- connect defaultConnectInfo {
+      connectDatabase = "haskell_test"
+    , connectUser = "sasha_tr"
+    , connectPassword = "23212"
 
-main :: IO ()
-main = someFunc
+  }
+
+  putStrLn "2 + 2"
+  mapM_ print =<< ( query_ conn "select 2 + 2" :: IO [Only Int] )
