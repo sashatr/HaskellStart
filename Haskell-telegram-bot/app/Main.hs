@@ -6,7 +6,7 @@ import Control.Monad.IO.Class                  (liftIO)
 
 import Data.Text                               (Text, pack)
 import Data.Int                                (Int64)
-import Data.ByteString                         (ByteString)
+import Data.ByteString()                         --(ByteString)
 import qualified Data.Text                     as Text
 
 import qualified Telegram.Bot.API              as Telegram
@@ -83,9 +83,14 @@ bot = BotApp
     handleAction action model = case action of
       NoOp -> pure model
       Start -> model <# do
+        co <- liftIO conn
+        liftIO $ delTodoItem co TodoItem {todo_item="ok"}
         reply (toReplyMessage startMessage)
           { replyMessageReplyMarkup = Just (Telegram.SomeReplyKeyboardMarkup startMessageKeyboard) }
         pure NoOp
+        where
+          delTodoItem :: Connection -> TodoItem -> IO Int64
+          delTodoItem c i = execute c "DELETE FROM todo" i
       Show -> model <# do
         if null model
           then replyText (pack "No text")
