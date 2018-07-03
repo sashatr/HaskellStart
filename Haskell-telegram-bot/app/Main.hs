@@ -83,30 +83,30 @@ bot = BotApp
     handleAction action model = case action of
       NoOp -> pure model
       Start -> model <# do
-        co <- liftIO conn
-        liftIO $ delTodoItem co TodoItem {todo_item="ok"}
+        -- con <- liftIO conn
+        -- _ <- liftIO $ delTodoItem con TodoItem {todo_item=item}
         reply (toReplyMessage startMessage)
           { replyMessageReplyMarkup = Just (Telegram.SomeReplyKeyboardMarkup startMessageKeyboard) }
         pure NoOp
-        where
-          delTodoItem :: Connection -> TodoItem -> IO Int64
-          delTodoItem c i = execute c "DELETE FROM todo" i
+        -- where
+          -- removeTodoItem :: Connection -> TodoItem -> IO Int64
+          -- removeTodoItem c i = execute c "DELETE FROM users2 WHERE id = ?" $ Only $ id_user i
       Show -> model <# do
         if null model
           then replyText (pack "No text")
           else replyText (Text.unlines model)
         pure NoOp
       AddItem item -> (item : model) <# do
-        co <- liftIO conn
-        liftIO $ addTodoItem co TodoItem {todo_item=item}
+        con <- liftIO conn
+        _ <- liftIO $ addTodoItem con TodoItem {todo_item=item}
         pure Show
         where
           addTodoItem :: Connection -> TodoItem -> IO Int64
           addTodoItem c i = execute c "INSERT INTO todo (item) VALUES (?)" i
 
       RemoveItem item -> filter (/= item) model <# do
-        co <- liftIO conn
-        liftIO $ removeTodoItem co TodoItem {todo_item=item}
+        con <- liftIO conn
+        _ <- liftIO $ removeTodoItem con TodoItem {todo_item=item}
         pure Show
         where
           removeTodoItem :: Connection -> TodoItem -> IO Int64
@@ -119,4 +119,8 @@ run token = do
 
 main :: IO ()
 main = do
-  putStrLn "Telegram bot is not implemented yet!"
+  putStrLn "Please, enter Telegram bot's API token:"
+  token <- Telegram.Token . Text.pack <$> getLine
+  putStrLn "Ok, go"
+  run token
+  return ()
