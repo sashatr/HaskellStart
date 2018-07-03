@@ -47,9 +47,9 @@ main = do
     , connectPassword = "23212"
   }
   putStrLn "Connected."
-  mapM_ (putStrLn . show) =<< allTodoItems conn
+  -- mapM_ (putStrLn . show) =<< allTodoItems conn
   -- mapM_ (putStrLn . show) =<< getTodoItem conn 0
-  -- putStrLn . show =<< addTodoItem conn TodoItem {id_user=3, name="user4", mes="mes4"}
+  putStrLn . show =<< addTodoItem conn TodoItem {id_user=3, name="user4", mes="mes4"}
   -- putStrLn . show =<< changeTodoItem conn TodoItem {id_user=3, name="user4.1", mes="mes4.1"}
   -- putStrLn . show =<< removeTodoItem conn TodoItem {id_user=3, name="user4.1", mes="mes4.1"}
   putStrLn "The End."

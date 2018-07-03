@@ -2,12 +2,21 @@ module Main where
 
 import Control.Applicative
 import Data.Text (Text, pack)
+import Data.Int                                (Int64)
+import Data.ByteString                         (ByteString)
 import qualified Data.Text as Text
 
 import qualified Telegram.Bot.API as Telegram
 import Telegram.Bot.Simple
 import Telegram.Bot.Simple.UpdateParser
 
+import Database.PostgreSQL.Simple
+import Database.PostgreSQL.Simple.ToField
+import Database.PostgreSQL.Simple.FromRow
+import Database.PostgreSQL.Simple.ToRow
+
+data TodoItem = TodoItem { todo_item :: Text
+                         } deriving Show
 type Model = [Text]
 
 data Action
@@ -16,6 +25,12 @@ data Action
   | AddItem Text
   | RemoveItem Text
   | Show
+
+instance FromRow TodoItem where
+  fromRow = TodoItem <$> field
+
+instance ToRow TodoItem where
+  toRow t = [toField (todo_item t)]
 
 startMessage :: Text
 startMessage = Text.unlines ( map pack
@@ -32,7 +47,8 @@ startMessage = Text.unlines ( map pack
 startMessageKeyboard :: Telegram.ReplyKeyboardMarkup
 startMessageKeyboard = Telegram.ReplyKeyboardMarkup
   { Telegram.replyKeyboardMarkupKeyboard =
-      [ [ Telegram.KeyboardButton (pack "Buy milk") Nothing Nothing, Telegram.KeyboardButton (pack "Bake a cake") Nothing Nothing ] ]
+      [ [ Telegram.KeyboardButton (pack "Buy milk") Nothing Nothing,
+          Telegram.KeyboardButton (pack "Bake a cake") Nothing Nothing ] ]
   , Telegram.replyKeyboardMarkupResizeKeyboard = Just True
   , Telegram.replyKeyboardMarkupOneTimeKeyboard = Just True
   , Telegram.replyKeyboardMarkupSelective = Just True
@@ -67,9 +83,10 @@ bot = BotApp
         pure NoOp
       AddItem item -> (item : model) <# do
         pure Show
+        --
       RemoveItem item -> filter (/= item) model <# do
+        --
         pure Show
-
 
 run :: Telegram.Token -> IO ()
 run token = do
@@ -77,4 +94,5 @@ run token = do
   startBot_ bot env
 
 main :: IO ()
-main = putStrLn "Telegram bot is not implemented yet!"
+main = do
+  putStrLn "Telegram bot is not implemented yet!"
