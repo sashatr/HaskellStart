@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 module Main where
 
 import Control.Applicative
@@ -33,6 +34,13 @@ instance FromRow TodoItem where
 
 instance ToRow TodoItem where
   toRow t = [toField (todo_item t)]
+
+conn :: IO Connection
+conn = do
+  connect defaultConnectInfo {
+    connectDatabase = "haskell_test"
+  , connectUser = "sasha_tr"
+  , connectPassword = "23212"}
 
 startMessage :: Text
 startMessage = Text.unlines ( map pack
@@ -84,15 +92,23 @@ bot = BotApp
           else replyText (Text.unlines model)
         pure NoOp
       AddItem item -> (item : model) <# do
-        liftIO conn
+        co <- liftIO conn
+        liftIO $ addTodoItem co TodoItem {todo_item=item}
         pure Show
+        where
+          addTodoItem :: Connection -> TodoItem -> IO Int64
+          addTodoItem c i = execute c "INSERT INTO todo (item) VALUES (?)" i
+
       RemoveItem item -> filter (/= item) model <# do
-        --
+        co <- liftIO conn
+        liftIO $ removeTodoItem co TodoItem {todo_item=item}
         pure Show
+        where
+          removeTodoItem :: Connection -> TodoItem -> IO Int64
+          removeTodoItem c i = execute c "DELETE FROM todo WHERE item = ?" $ Only $ todo_item i
 
 run :: Telegram.Token -> IO ()
 run token = do
-  -- conn
   env <- Telegram.defaultTelegramClientEnv token
   startBot_ bot env
 
