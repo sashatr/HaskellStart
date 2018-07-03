@@ -1,12 +1,14 @@
 module Main where
 
 import Control.Applicative
-import Data.Text (Text, pack)
+import Control.Monad.IO.Class                  (liftIO)
+
+import Data.Text                               (Text, pack)
 import Data.Int                                (Int64)
 import Data.ByteString                         (ByteString)
-import qualified Data.Text as Text
+import qualified Data.Text                     as Text
 
-import qualified Telegram.Bot.API as Telegram
+import qualified Telegram.Bot.API              as Telegram
 import Telegram.Bot.Simple
 import Telegram.Bot.Simple.UpdateParser
 
@@ -82,14 +84,15 @@ bot = BotApp
           else replyText (Text.unlines model)
         pure NoOp
       AddItem item -> (item : model) <# do
+        liftIO conn
         pure Show
-        --
       RemoveItem item -> filter (/= item) model <# do
         --
         pure Show
 
 run :: Telegram.Token -> IO ()
 run token = do
+  -- conn
   env <- Telegram.defaultTelegramClientEnv token
   startBot_ bot env
 
