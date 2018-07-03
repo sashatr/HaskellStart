@@ -5,7 +5,7 @@ import Data.Text
 import Data.Int                                (Int64)
 import Data.ByteString                         (ByteString)
 import Control.Applicative
-import Control.Monad.IO.Class                  (liftIO)
+-- import Control.Monad.IO.Class                  (liftIO)
 import Database.PostgreSQL.Simple
 import Database.PostgreSQL.Simple.ToField
 import Database.PostgreSQL.Simple.FromRow
