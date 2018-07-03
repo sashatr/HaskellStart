@@ -83,14 +83,14 @@ bot = BotApp
     handleAction action model = case action of
       NoOp -> pure model
       Start -> model <# do
-        -- con <- liftIO conn
-        -- _ <- liftIO $ delTodoItem con TodoItem {todo_item=item}
+        con <- liftIO conn
+        _ <- liftIO $ delTodoItem con
         reply (toReplyMessage startMessage)
           { replyMessageReplyMarkup = Just (Telegram.SomeReplyKeyboardMarkup startMessageKeyboard) }
         pure NoOp
-        -- where
-          -- removeTodoItem :: Connection -> TodoItem -> IO Int64
-          -- removeTodoItem c i = execute c "DELETE FROM users2 WHERE id = ?" $ Only $ id_user i
+        where
+          delTodoItem :: Connection -> IO [TodoItem]
+          delTodoItem c = query_ c "DELETE FROM todo"
       Show -> model <# do
         if null model
           then replyText (pack "No text")
@@ -115,7 +115,7 @@ bot = BotApp
 run :: Telegram.Token -> IO ()
 run token = do
   env <- Telegram.defaultTelegramClientEnv token
-  startBot_ bot env
+  startBotAsync_ bot env
 
 main :: IO ()
 main = do
