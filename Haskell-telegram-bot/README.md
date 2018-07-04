@@ -13,7 +13,7 @@ Ok, go
 ```
 ## About bot
 
-The bot is based on the author's example but with my repository in PostgreSQL. 
+This bot keeps a list of notes. Uses PostgreSQL to store items.
 - Each item is added and removed from the table.
 - Cleaning the database during new work.
 
@@ -39,3 +39,10 @@ Table Contents:
  -> test_item_2
                  
 ```
+When the bot is restarted, the table is cleared:
+```
+Table Contents:
+      item     | 
+---------------- ....
+  ```
+  
