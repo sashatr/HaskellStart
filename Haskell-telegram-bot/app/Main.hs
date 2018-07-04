@@ -89,8 +89,8 @@ bot = BotApp
           { replyMessageReplyMarkup = Just (Telegram.SomeReplyKeyboardMarkup startMessageKeyboard) }
         pure NoOp
         where
-          delTodoItem :: Connection -> IO [TodoItem]
-          delTodoItem c = query_ c "DELETE FROM todo"
+          delTodoItem :: Connection -> IO Int64
+          delTodoItem c = execute_ c "DELETE FROM todo"
       Show -> model <# do
         if null model
           then replyText (pack "No text")
