@@ -38,9 +38,9 @@ instance ToRow TodoItem where
 conn :: IO Connection
 conn = do
   connect defaultConnectInfo {
-    connectDatabase = "haskell_test"
-  , connectUser = "sasha_tr"
-  , connectPassword = "23212"}
+    connectDatabase = "haskell_db"
+  , connectUser = "haskell_user"
+  , connectPassword = "password"}
 
 startMessage :: Text
 startMessage = Text.unlines ( map pack
